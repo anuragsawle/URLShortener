@@ -1,7 +1,7 @@
 FROM alpine:latest
 
-RUN apk add --no-cache -y libzmq3-dev python3-pip
-RUN pip3 install --upgrade pip
+RUN apk add --no-cache python3
+RUN apk add py3-pip
 
 WORKDIR /app
 
