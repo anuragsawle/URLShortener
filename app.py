@@ -17,6 +17,11 @@ def URLShortener(URL):
         data = {"url": URL}
         short = requests.post(cuttly, data=data).text
         shortenURL = short
+        urlsToAdd = URL + ':::' + shortenURL + '\n'
+        if urlsToAdd[0] != 'f':
+            textFile = open('Previously_searched_urls.txt', 'a')
+            textFile.write(urlsToAdd)
+            textFile.close()
         return jsonify({'URL': URL,
                         'Shortener URL': shortenURL})
 
