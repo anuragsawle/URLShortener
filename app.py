@@ -13,11 +13,26 @@ def getURL():
 
 @app.route('/<string:URL>/')
 def URLShortener(URL):
+    textFile = open('Previously_searched_urls.txt', 'r')
+    previous_urls = textFile.readlines()
+    found = False
+    givenURL = URL
+    for url in previous_urls:
+        foundUrls = url.split(':::')
+        foundUrl = foundUrls[0]
+        if foundUrl == givenURL:
+            shortenURL = foundUrls[1]
+            shortenURL = shortenURL.split('\n')[0]
+            found = True
+    if found:
+        return jsonify({'URL': URL,
+                        'Shortener URL': shortenURL})
+    else:
         cuttly = "https://cutt.ly/scripts/shortenUrl.php"
         data = {"url": URL}
         short = requests.post(cuttly, data=data).text
         shortenURL = short
-        urlsToAdd = URL + ':::' + shortenURL + '\n'
+        urlsToAdd = givenURL + ':::' + shortenURL + '\n'
         if urlsToAdd[0] != 'f':
             textFile = open('Previously_searched_urls.txt', 'a')
             textFile.write(urlsToAdd)
